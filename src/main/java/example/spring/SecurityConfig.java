@@ -11,7 +11,7 @@ public class SecurityConfig {
 	DefaultSecurityFilterChain springSecurity(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests()
-				.antMatchers("/user").authenticated()
+				.requestMatchers("/user").authenticated()
 				.and()
 			.formLogin().and()
 			.httpBasic();
