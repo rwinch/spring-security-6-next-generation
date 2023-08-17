@@ -7,6 +7,8 @@ plugins {
 group = 'example'
 version = '0.0.1-SNAPSHOT'
 
+ext['spring-security.version'] = '5.8.5'
+
 java {
     sourceCompatibility = '17'
 }
