@@ -2,6 +2,7 @@ package example.spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,7 +24,9 @@ public class SecurityConfig {
 				.csrfTokenRequestHandler(requestHandler)
 			)
 			.authorizeHttpRequests(requests -> requests
-				.requestMatchers("/user").authenticated()
+				.requestMatchers("/user").access((a,c) ->
+					new AuthorizationDecision(c.getRequest().getParameterMap().containsKey("allowed"))
+				)
 				.anyRequest().permitAll()
 			)
 			.formLogin(withDefaults())
