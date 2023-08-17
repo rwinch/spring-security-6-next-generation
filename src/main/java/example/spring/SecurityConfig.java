@@ -10,7 +10,7 @@ public class SecurityConfig {
 	@Bean
 	DefaultSecurityFilterChain springSecurity(HttpSecurity http) throws Exception {
 		http
-			.authorizeRequests()
+			.authorizeHttpRequests()
 				.antMatchers("/user").authenticated()
 				.and()
 			.formLogin().and()
