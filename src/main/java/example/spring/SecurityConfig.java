@@ -15,7 +15,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
 	@Bean
-	DefaultSecurityFilterChain springSecurity(HttpSecurity http) throws Exception {
+	DefaultSecurityFilterChain springSecurity(HttpSecurity http, OpaAuthorizationManager opa) throws Exception {
 		XorCsrfTokenRequestAttributeHandler requestHandler = new XorCsrfTokenRequestAttributeHandler();
 		// set the name of the attribute the CsrfToken will be populated on
 		requestHandler.setCsrfRequestAttributeName("_csrf");
@@ -24,10 +24,7 @@ public class SecurityConfig {
 				.csrfTokenRequestHandler(requestHandler)
 			)
 			.authorizeHttpRequests(requests -> requests
-				.requestMatchers("/user").access((a,c) ->
-					new AuthorizationDecision(c.getRequest().getParameterMap().containsKey("allowed"))
-				)
-				.anyRequest().permitAll()
+				.anyRequest().access(opa)
 			)
 			.formLogin(withDefaults())
 			.httpBasic(withDefaults());
